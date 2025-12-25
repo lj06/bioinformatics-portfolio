@@ -2,13 +2,13 @@
 # Bioinformatics data
 ############################
 
-# Raw sequencing data (never commit)
-data/raw_fastq/
-**/raw_fastq/
+# Raw sequencing data (ignore contents, keep README)
+**/raw_fastq/*
+!**/raw_fastq/README.md
 
 # Intermediate / result outputs
-results/
-**/results/
+**/results/*
+!**/results/README.md
 
 # Large alignment and binary files
 *.bam
