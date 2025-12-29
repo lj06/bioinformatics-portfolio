@@ -24,10 +24,3 @@ Run the complete pipeline on a small example dataset:
 
 ```bash scripts/run_all.sh```
 
-
-## Repository Structure
-.
-├── scripts/        # Pipeline scripts (01–04 + run_all.sh)
-├── data/           # Input data (raw data ignored; sample data tracked)
-├── results/        # Output files (not tracked)
-└── README.md
