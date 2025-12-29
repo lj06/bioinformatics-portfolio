@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Prepare paired-end FASTQ
+# Step 1: Prepare paired-end FASTQ files
 
-
-# Input directory 
 RAW_FASTQ_DIR="../data/raw_fastq"
-
-# Output directory
 OUT_DIR="../data/processed_fastq"
+SCRIPT_DIR="../scripts"
+
 mkdir -p "$OUT_DIR"
 
-# SRR sample list
 SAMPLES=(
   SRR1993270
   SRR1993271
@@ -25,9 +22,10 @@ SAMPLES=(
   SRR3215124
 )
 
-# Split into paired-end reads
 for srr in "${SAMPLES[@]}"; do
-  perl FastQ.split.pl \
+  perl "$SCRIPT_DIR/FastQ.split.pl" \
     "$RAW_FASTQ_DIR/${srr}.fastq" \
     "$OUT_DIR/${srr}"
 done
+
+pigz -9f "$OUT_DIR"/*.fastq
