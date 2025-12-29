@@ -5,27 +5,30 @@ set -euo pipefail
 
 RAW_FASTQ_DIR="../data/raw_fastq"
 OUT_DIR="../data/processed_fastq"
-SCRIPT_DIR="../scripts"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 mkdir -p "$OUT_DIR"
 
-SAMPLES=(
-  SRR1993270
-  SRR1993271
-  SRR1993272
-  SRR2984947
-  SRR2985018
-  SRR3214715
-  SRR3215024
-  SRR3215107
-  SRR3215123
-  SRR3215124
-)
+echo "Detecting raw FASTQ files in: $RAW_FASTQ_DIR"
 
-for srr in "${SAMPLES[@]}"; do
+shopt -s nullglob
+RAW_FILES=("$RAW_FASTQ_DIR"/SRR*.fastq)
+shopt -u nullglob
+
+for fq in "${RAW_FILES[@]}"; do
+  srr=$(basename "$fq" .fastq)
+  echo "Processing sample: $srr"
+
   perl "$SCRIPT_DIR/FastQ.split.pl" \
-    "$RAW_FASTQ_DIR/${srr}.fastq" \
-    "$OUT_DIR/${srr}"
+    "$fq" \
+    "$OUT_DIR/$srr"
 done
 
+# for srr in "${SAMPLES[@]}"; do
+#   perl "$SCRIPT_DIR/FastQ.split.pl" \
+#     "$RAW_FASTQ_DIR/${srr}.fastq" \
+#     "$OUT_DIR/${srr}"
+# done
+
 pigz -9f "$OUT_DIR"/*.fastq
+echo "Step 1 completed"
